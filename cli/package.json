@@ -1,7 +1,7 @@
 {
   "author": "Kel Kanhirun @kanhirun",
   "bin": {
-    "cli": "./bin/run.js"
+    "cli": "./bin/dev.js"
   },
   "dependencies": {
     "@oclif/core": "^3",
