@@ -1,2 +1,2 @@
 export type { Hex } from 'viem';
-export { dispatch, payForGas } from './core'
+export { dispatch, payForGas, getDispatchEvents } from './core'
