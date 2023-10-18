@@ -19,7 +19,7 @@ type PayForGasParams = {
     messageId: Hex,
     gasAmount: number,
     igpAddress?: Address,
-    refundAddress: Address,
+    refundAddress?: Address,
     privateKey: Hex
   },
   destination: {
@@ -33,7 +33,7 @@ export const payForGas = async ({
     originDomain,
     rpcUrl: originRpcUrl,
     gasAmount,
-    igpAddress: overrideIgpAddress,  // make me optional
+    igpAddress: overrideIgpAddress,
     messageId,
     refundAddress,
     privateKey,
@@ -78,7 +78,7 @@ export const payForGas = async ({
       messageId,
       destinationDomain,
       gasAmount,
-      refundAddress
+      refundAddress || account.address
     ],
     value: quotedGasPayment,
   });
