@@ -30,8 +30,14 @@ export default class SearchCommand extends Command {
       match
     });
 
-    for await (const res of generator) {
-      this.log(res.map((x: any) => x.args.sender));
+    for await (const logs of generator) {
+      this.log(logs.map((log: any) => {
+        return {
+          sender: log.args.sender,
+          recipient: log.args.recipient,
+          destination: log.args.destination
+        }
+      }));
     }
   }
 }
