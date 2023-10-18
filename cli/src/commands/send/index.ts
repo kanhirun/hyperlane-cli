@@ -44,6 +44,12 @@ export default class SendCommand extends Command {
         recipientAddress: args.recipient as Hex
       }
     })
+    .then(messageId => {
+      this.log(`[send.dispatch]: messageId=(${messageId})`)
+      return messageId;
+    }).catch(reason => {
+      this.error(`[send.dispatch]: failed, reason=${reason}`);
+    })
     .then(messageId => payForGas({
       origin: {
         originDomain: args.origin,
@@ -57,7 +63,9 @@ export default class SendCommand extends Command {
         destinationRpcUrl: args.destinationRpcUrl
       }
     })).then(() => {
-      this.log('delivered.')
-    });
+      this.log(`[send.deliver]: success`)
+    }).catch(reason => {
+      this.error(`[send.deliver]: failed, reason=${reason}`);
+    })
   }
 }
