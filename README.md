@@ -72,6 +72,8 @@ cli search --help
 export ADDRESS='your-address'
 ```
 
+You can find paginated search results, which your message should appear as most recent.
 ```sh-session
-cli search '[{ "sender": "$ADDRESS" }]' --chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/$API_KEY
+cli search --chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/$API_KEY
 ```
+
