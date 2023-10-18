@@ -21,25 +21,24 @@ export default class SearchCommand extends Command {
   async run(): Promise<void> {
     const {args, flags} = await this.parse(SearchCommand)
 
-    const match = args.match && JSON.parse(args.match) || [];
+    const matchList = args.match && JSON.parse(args.match) || [];
 
-    const generator = getDispatchEvents({
+    await getDispatchEvents({
       domainId: flags.chainId,
       rpcUrl: flags.rpcUrl,
-      match,
+      matchList,
       resultSize: 10,
       step: 100n,
       searchLimit: 1_000_000n,
-    });
-
-    for await (const logs of generator) {
-      this.log(logs.map((log: any) => {
+    }, (logs) => {
+      const formatted = logs.map((log: any) => {
         return {
           sender: log.args.sender,
           recipient: log.args.recipient,
           destination: log.args.destination
         }
-      }));
-    }
+      });
+      console.log(formatted);
+    });
   }
 }

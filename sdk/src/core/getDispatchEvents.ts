@@ -10,20 +10,20 @@ import { isMatched, isMatchedFn, getChainByChainId, getMailboxAddressByChain } f
 type GetDispatchEventsParam = {
   domainId: number;
   rpcUrl: string,
-  match: MatchingList;
-  resultSize: number;
-  step: bigint;
-  searchLimit: bigint;
+  matchList: MatchingList;
+  resultSize?: number;
+  step?: bigint;
+  searchLimit?: bigint;
 }
 
-export const getDispatchEvents = async function* ({
+export const getDispatchEvents = async ({
   domainId,
   rpcUrl,
-  match: matchList,
+  matchList,
   resultSize = 10,
   step = 100n,
   searchLimit = 1_000_000n,
-}: GetDispatchEventsParam) {
+}: GetDispatchEventsParam, callback?: (items: Array<any>) => void) => {
   const chain = getChainByChainId(domainId);
 
   if (chain === null) {
@@ -75,8 +75,8 @@ export const getDispatchEvents = async function* ({
     }
     const results = queue.splice(0, resultSize);
 
-    yield results;
+    callback && callback(results);
   }
 
-  if (queue.length > 0) yield queue;
+  if (queue.length > 0 && callback) callback(queue);
 }

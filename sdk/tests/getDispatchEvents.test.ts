@@ -1,6 +1,6 @@
 import {describe, beforeEach, expect, test, jest} from '@jest/globals';
 import { sepolia } from 'viem/chains';
-import { getDispatchEvents } from '../src/commands/getDispatchEvents';
+import { getDispatchEvents } from '../src/core/getDispatchEvents';
 import { MatchingList, MatchingListElement } from '../src/types';
 
 import { createPublicClient, http } from 'viem';
@@ -16,13 +16,13 @@ describe('sender, destinationDomain', () => {
       { args: { sender: 'alice', recipient: '_' } },
       { args: { sender: '_', recipient: 'alice' } },
     ]);
-    const originDomain = 1;
+    const domainId = 1;
     const match = [{
       senderAddress: 'alice',
       recipientAddress: 'alice'
     }];
 
-    const results = await getDispatchEvents({ originDomain , match });
+    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', match });
 
     expect(results).toEqual([]) 
   });
@@ -30,7 +30,7 @@ describe('sender, destinationDomain', () => {
 
 test('returns all events if match empty', async () => {
   __setLogs([ 1, 2, 3 ]);
-  const results = await getDispatchEvents({ originDomain: 5, match: [] });
+  const results = await getDispatchEvents({ domainId: 5, rpcUrl: 'some-url', match: [] });
   expect(results).toEqual([ 1, 2, 3 ]) 
 });
 
@@ -44,10 +44,10 @@ describe('sender', () => {
   });
 
   test(`filters senders`, async () => {
-    const originDomain = 1;
+    const domainId = 1;
     const match = [{ senderAddress: 's2' }];
 
-    const results = await getDispatchEvents({ originDomain , match });
+    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', match });
 
     expect(results).toEqual([
       { args: { sender: 's2', recipient: 'r2' }}
@@ -55,10 +55,10 @@ describe('sender', () => {
   });
 
   test(`filters many senders`, async () => {
-    const originDomain = 1;
+    const domainId = 1;
     const match = [{ senderAddress: ['s3', 's2']  }];
 
-    const results = await getDispatchEvents({ originDomain , match });
+    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', match });
 
     expect(results).toEqual([
       { args: { sender: 's2', recipient: 'r2' }},
