@@ -24,7 +24,7 @@ cd ./cli && npm install && npm link sdk && npm run build && npm link
 Your command should now be working.
 
 ```sh-session
-cli
+$ cli
 
 VERSION
   cli/0.0.0 darwin-arm64 node-v18.7.0
