@@ -11,12 +11,18 @@ type GetDispatchEventsParam = {
   domainId: number;
   rpcUrl: string,
   match: MatchingList;
+  resultSize: number;
+  step: bigint;
+  searchLimit: bigint;
 }
 
 export const getDispatchEvents = async function* ({
   domainId,
   rpcUrl,
   match: matchList,
+  resultSize = 10,
+  step = 100n,
+  searchLimit = 1_000_000n,
 }: GetDispatchEventsParam) {
   const chain = getChainByChainId(domainId);
 
@@ -31,19 +37,15 @@ export const getDispatchEvents = async function* ({
     transport: http(rpcUrl)
   });
 
-  // create generic pagination
-  const blockStep = 100n;
-  // const blockLimit = 1_000_000n;
-  const blockLimit = 100_000n;
+  // todo create generic pagination
   var toBlock   = await client.getBlock().then(block => block.number);
-  var fromBlock = toBlock - blockStep;
-  const finalBlock = (fromBlock - blockLimit) > 0n ? (fromBlock - blockLimit) : 0n;
+  var fromBlock = toBlock - step;
+  const finalBlock = (fromBlock - searchLimit) > 0n ? (fromBlock - searchLimit) : 0n;
 
-  const queueLimit = 10;
   var queue: any = [];
 
   while (fromBlock > finalBlock) {
-    while (queue.length < queueLimit && fromBlock > finalBlock) {
+    while (queue.length < resultSize && fromBlock > finalBlock) {
       const events = await client.getContractEvents({
         address: mailboxAddress,
         abi: mailboxAbi,
@@ -69,9 +71,9 @@ export const getDispatchEvents = async function* ({
       queue = [...queue, ...filtered];
 
       toBlock = fromBlock;
-      fromBlock -= blockStep;
+      fromBlock -= step;
     }
-    const results = queue.splice(0, queueLimit);
+    const results = queue.splice(0, resultSize);
 
     yield results;
   }

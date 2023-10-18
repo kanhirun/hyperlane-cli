@@ -22,12 +22,14 @@ export default class SearchCommand extends Command {
     const {args, flags} = await this.parse(SearchCommand)
 
     const match = args.match && JSON.parse(args.match) || [];
-    console.log(match);
 
     const generator = getDispatchEvents({
       domainId: flags.chainId,
       rpcUrl: flags.rpcUrl,
-      match
+      match,
+      resultSize: 10,
+      step: 100n,
+      searchLimit: 1_000_000n,
     });
 
     for await (const logs of generator) {
