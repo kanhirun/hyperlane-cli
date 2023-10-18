@@ -2,20 +2,23 @@ hyperlane-cli
 =================
 
 <!-- toc -->
-* [Usage](#usage)
+* [Getting Started](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
-# Usage
+
+# Getting Started
 <!-- usage -->
+This repo contains two local modules, `cli` and `sdk`, which needs to be installed in
+order to use the cli.
+
 ```sh-session
-$ cd ./cli && npm link
-$ cli COMMAND
-running command...
-$ cli (--version)
-cli/0.0.0 darwin-arm64 node-v18.7.0
-$ cli --help [COMMAND]
-USAGE
-  $ cli COMMAND
+$ cd ./sdk && npm install
+$ npm link
+$ cd ..
+$ cd ./cli && npm install
+$ npm link sdk
+
+$ cli
 ...
 ```
 <!-- usagestop -->
