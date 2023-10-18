@@ -5,7 +5,7 @@ import {
   http,
 } from 'viem';
 import mailboxAbi from '../abi/IMailbox.abi.json';
-import { isMatched, isMatchedFn, getChainByChainId, getMailboxAddressByChain } from '../utils';
+import { BigInt, isMatched, isMatchedFn, getChainByChainId, getMailboxAddressByChain } from '../utils';
 
 type GetDispatchEventsParam = {
   domainId: number;
@@ -19,7 +19,7 @@ type GetDispatchEventsParam = {
 export const getDispatchEvents = async ({
   domainId,
   rpcUrl,
-  matchList,
+  matchList = [],
   resultSize = 10,
   step = 100n,
   searchLimit = 1_000_000n,
@@ -40,7 +40,7 @@ export const getDispatchEvents = async ({
   // todo create generic pagination
   var toBlock   = await client.getBlock().then(block => block.number);
   var fromBlock = toBlock - step;
-  const finalBlock = (fromBlock - searchLimit) > 0n ? (fromBlock - searchLimit) : 0n;
+  const finalBlock = BigInt.max(fromBlock - searchLimit, 0n);
 
   var queue: any = [];
 
@@ -54,19 +54,9 @@ export const getDispatchEvents = async ({
         toBlock,
       });
 
-      const filtered = events.filter(event => {
-        if (matchList.length === 0) return true;
+      const filtered = events.filter(isMatchedFn(domainId, matchList));
 
-        return matchList.some(match => {
-          // @ts-ignore
-          const args = event.args;
-
-          return isMatched(domainId, match.originDomain) &&
-            isMatched(args.sender, match.senderAddress) &&
-            isMatched(args.recipient, match.recipientAddress) &&
-            isMatched(args.destination, match.destinationDomain);
-        });
-      });
+      console.log(`[filter]: matchList=(${matchList}), events=(${events.length}), filtered=${filtered.length}, queue=${queue.length}`);
 
       queue = [...queue, ...filtered];
 

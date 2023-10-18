@@ -2,9 +2,9 @@ import { Log } from 'viem';
 import { MatchingList } from "../types";
 
 export const isMatchedFn = (
-  originDomain: number,
+  domainId: number,
   matchList: MatchingList
-): <T extends Log>(value: T, index: number, array: Array<T>) => boolean => {
+): <T extends any>(value: T, index: number, array: Array<T>) => boolean => {
   return (value, index, array) => {
     if (matchList.length === 0) return true;
 
@@ -12,11 +12,13 @@ export const isMatchedFn = (
       // @ts-ignore
       const args = value.args;
 
-      return
-        isMatched(originDomain, match.originDomain) &&
+      const results = 
+        isMatched(domainId, match.originDomain) &&
         isMatched(args.sender, match.senderAddress) &&
         isMatched(args.recipient, match.recipientAddress) &&
         isMatched(args.destination, match.destinationDomain);
+
+      return results;
     });
   }
 }
