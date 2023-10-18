@@ -4,6 +4,7 @@ import {
   createWalletClient,
   toHex,
   publicActions,
+  pad,
 } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { getChainByChainId, getMailboxAddressByChain } from '../utils';
@@ -57,7 +58,7 @@ export const dispatch = async ({
     functionName: 'dispatch',
     args: [
       destinationDomainId,
-      recipientAddress,
+      pad(recipientAddress, { dir: 'left', size: 32 }),
       toHex(messageBody)
     ]
   });

@@ -13,14 +13,14 @@ export default class SendCommand extends Command {
 
     destination: Args.integer({description: `destination chain's domain id`, required: true}),
     destinationRpcUrl: Args.string({description: `rpc url to use for destination`, required: true}),
-    recipient: Args.string({description: `recipient address (left padded to a bytes32)`, required: true}),
+    recipient: Args.string({description: `recipient address`, required: true}),
   }
 
   static description = 'Sends an interchain message with Hyperlane.'
 
   static examples = [
     `
-    $ ./bin/dev.js send 11155111 https://sepolia.infura.io/v3/<API_KEY> "some-message" <PRIVATE_KEY> 5 https://goerli.infura.io/v3/<API_KEY> 0x00000000000000000000000036FdA966CfffF8a9Cdc814f546db0e6378bFef35
+    $ ./bin/dev.js send 11155111 https://sepolia.infura.io/v3/<API_KEY> "some-message" <PRIVATE_KEY> 5 https://goerli.infura.io/v3/<API_KEY> 0x36FdA966CfffF8a9Cdc814f546db0e6378bFef35
     `,
   ]
 
