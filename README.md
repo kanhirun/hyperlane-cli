@@ -13,57 +13,35 @@ built before using the cli.
 
 ```sh-session
 $ cd ./sdk && npm install && npm link && cd ../
-$ cd ./cli && npm install && npm link sdk && npm build
+$ cd ./cli && npm install && npm link sdk && npm run build
 $ npm link
 
 $ cli
 ...
 ```
-<!-- usagestop -->
-# Commands
-<!-- commands -->
-* [`cli send PERSON`](#cli-hello-person)
-* [`cli search world`](#cli-hello-world)
 
-## `cli send`
+## Sending your first message
 
-Say hello
+As an example, we can send a message from sepolia to goerli using infura as a provider.
 
-```
-USAGE
-  $ cli hello PERSON -f <value>
+```sh-session
+$ cli send --help
 
-ARGUMENTS
-  PERSON  Person to say hello to
+$ export API_KEY='your-infura-api-key'
+$ export PRIVATE_KEY='your-private-key'
 
-FLAGS
-  -f, --from=<value>  (required) Who is saying hello
-
-DESCRIPTION
-  Say hello
-
-EXAMPLES
-  $ oex hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
+$ cli send 11155111 https://sepolia.infura.io/v3/$API_KEY "my first message" 5 https://goerli.infura.io/v3/$API_KEY 0x36FdA966CfffF8a9Cdc814f546db0e6378bFef35
+...
 ```
 
-_See code: [src/commands/hello/index.ts](https://github.com/kanhirun/cli/blob/v0.0.0/src/commands/hello/index.ts)_
+## Searching for your message
 
-## `cli search`
+To find our message, we can filter `eth_getLogs` for our message.
 
-Say hello world
+```sh-session
+$ cli search --help
 
+$ export ADDRESS='your-address'
+
+$ cli search '[{ "sender": "$ADDRESS" }]' --chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/$API_KEY
 ```
-USAGE
-  $ cli hello world
-
-DESCRIPTION
-  Say hello world
-
-EXAMPLES
-  $ cli hello world
-  hello world! (./src/commands/hello/world.ts)
-```
-
-_See code: [src/commands/hello/world.ts](https://github.com/kanhirun/cli/blob/v0.0.0/src/commands/hello/world.ts)_
-<!-- commandsstop -->

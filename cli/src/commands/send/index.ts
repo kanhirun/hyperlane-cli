@@ -20,7 +20,7 @@ export default class SendCommand extends Command {
 
   static examples = [
     `
-    $ ./bin/dev.js send 11155111 https://sepolia.infura.io/v3/<API_KEY> "some-message" <PRIVATE_KEY> 5 https://goerli.infura.io/v3/<API_KEY> 0x36FdA966CfffF8a9Cdc814f546db0e6378bFef35
+    $ cli send 11155111 https://sepolia.infura.io/v3/<API_KEY> "some-message" <PRIVATE_KEY> 5 https://goerli.infura.io/v3/<API_KEY> 0x36FdA966CfffF8a9Cdc814f546db0e6378bFef35
     `,
   ]
 

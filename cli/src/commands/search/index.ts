@@ -9,8 +9,8 @@ export default class SearchCommand extends Command {
   static description = `Searches a specified chain's mailbox for messages based on criteria`
 
   static examples = [
-    `./cli/bin/dev.js --chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/<API_KEY>`,
-    `./cli/bin/dev.js search '[{ "sender": "<ADDRESS>" }]' --chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/<API_KEY>`
+    `$ cli --chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/<API_KEY>`,
+    `$ cli search '[{ "sender": "<ADDRESS>" }]' --chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/<API_KEY>`
   ]
 
   static flags = {
