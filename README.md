@@ -8,12 +8,12 @@ hyperlane-cli
 
 # Getting Started
 <!-- usage -->
-This repo contains two local modules, `cli` and `sdk`, which needs to be installed in
-order to use the cli. 
+This repo contains two local modules, `cli` and `sdk`, which needs to be installed and
+built before using the cli. 
 
 ```sh-session
-$ cd ./sdk && npm install && cd ../
-$ cd ./cli && npm install
+$ cd ./sdk && npm install && npm link && cd ../
+$ cd ./cli && npm install && npm link sdk && npm build
 $ npm link
 
 $ cli
