@@ -17,12 +17,12 @@ describe('sender, destinationDomain', () => {
       { args: { sender: '_', recipient: 'alice' } },
     ]);
     const domainId = 1;
-    const match = [{
+    const matchList = [{
       senderAddress: 'alice',
       recipientAddress: 'alice'
     }];
 
-    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', match });
+    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', matchList });
 
     expect(results).toEqual([]) 
   });
@@ -30,7 +30,7 @@ describe('sender, destinationDomain', () => {
 
 test('returns all events if match empty', async () => {
   __setLogs([ 1, 2, 3 ]);
-  const results = await getDispatchEvents({ domainId: 5, rpcUrl: 'some-url', match: [] });
+  const results = await getDispatchEvents({ domainId: 5, rpcUrl: 'some-url', matchList: [] });
   expect(results).toEqual([ 1, 2, 3 ]) 
 });
 
@@ -45,9 +45,9 @@ describe('sender', () => {
 
   test(`filters senders`, async () => {
     const domainId = 1;
-    const match = [{ senderAddress: 's2' }];
+    const matchList = [{ senderAddress: 's2' }];
 
-    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', match });
+    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', matchList });
 
     expect(results).toEqual([
       { args: { sender: 's2', recipient: 'r2' }}
@@ -56,9 +56,9 @@ describe('sender', () => {
 
   test(`filters many senders`, async () => {
     const domainId = 1;
-    const match = [{ senderAddress: ['s3', 's2']  }];
+    const matchList = [{ senderAddress: ['s3', 's2']  }];
 
-    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', match });
+    const results = await getDispatchEvents({ domainId , rpcUrl: 'some-url', matchList });
 
     expect(results).toEqual([
       { args: { sender: 's2', recipient: 'r2' }},
