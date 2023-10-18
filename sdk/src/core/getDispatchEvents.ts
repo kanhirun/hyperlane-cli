@@ -56,8 +56,6 @@ export const getDispatchEvents = async ({
 
       const filtered = events.filter(isMatchedFn(domainId, matchList));
 
-      console.log(`[filter]: matchList=(${matchList}), events=(${events.length}), filtered=${filtered.length}, queue=${queue.length}`);
-
       queue = [...queue, ...filtered];
 
       toBlock = fromBlock;
