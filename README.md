@@ -74,5 +74,5 @@ export ADDRESS='your-address'
 
 You can find your message through search.
 ```sh-session
-cli search '[{ "senderAddress": "$ADDRESS" }]'--chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/$API_KEY
+cli search '[{ "senderAddress": "$ADDRESS" }]' --chainId 11155111 --rpcUrl https://sepolia.infura.io/v3/$API_KEY
 ```
