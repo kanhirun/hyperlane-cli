@@ -21,7 +21,7 @@ export const getDispatchEvents = async ({
   rpcUrl,
   matchList = [],
   resultSize = 10,
-  step = 100n,
+  step = 1000n,
   searchLimit = 1_000_000n,
 }: GetDispatchEventsParam, callback?: (items: Array<any>) => void) => {
   const chain = getChainByChainId(domainId);
@@ -45,25 +45,23 @@ export const getDispatchEvents = async ({
   var queue: any = [];
 
   while (fromBlock > finalBlock) {
-    while (queue.length < resultSize && fromBlock > finalBlock) {
-      const events = await client.getContractEvents({
-        address: mailboxAddress,
-        abi: mailboxAbi,
-        eventName: 'Dispatch',
-        fromBlock,
-        toBlock,
-      });
+    const events = await client.getContractEvents({
+      address: mailboxAddress,
+      abi: mailboxAbi,
+      eventName: 'Dispatch',
+      fromBlock,
+      toBlock,
+    });
 
-      const filtered = events.filter(isMatchedFn(domainId, matchList));
+    const filtered = events.filter(isMatchedFn(domainId, matchList));
 
-      queue = [...queue, ...filtered];
+    queue = [...queue, ...filtered];
 
-      toBlock = fromBlock;
-      fromBlock -= step;
-    }
     const results = queue.splice(0, resultSize);
+    if (results.length > 0 && callback) callback(results);
 
-    callback && callback(results);
+    toBlock = fromBlock;
+    fromBlock -= step;
   }
 
   if (queue.length > 0 && callback) callback(queue);
